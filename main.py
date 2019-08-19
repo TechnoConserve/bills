@@ -1,48 +1,42 @@
 from datetime import datetime
 
-
-def get_cost_per_day(cost, period):
-    return cost / period.days
+from models import Bill
 
 
-def split_cost_by_days(total_cost, num_days):
-    return total_cost / num_days
+def split_bill(bill, start_date, end_date, num_split):
+    period = end_date - start_date
+    return (bill.cost_per_day * period.days) / num_split
 
 
-class Bill:
-    def __init__(self):
-        self.water_start = None
-        self.water_end = None
-        self.service_period = None
-        self.water_total = None
-        self.water_per_day = None
-
-    def water_bill(self):
-        self.water_start = datetime(year=2019, month=6, day=24)
-        self.water_end = datetime(year=2019, month=7, day=23)
-        self.service_period = self.water_end - self.water_start
-
-        self.water_total = 107.30
-        self.water_per_day = get_cost_per_day(self.water_total, self.service_period)
-        return self.service_period
+def summarize_bills(bills):
+    for bill in bills:
+        print("{}: {}/{} to {}/{} is ${:.2f} (${:.2f} per day)".format(
+            bill.category.title(),
+            bill.start_date.month,
+            bill.start_date.day,
+            bill.end_date.month,
+            bill.end_date.day,
+            bill.total,
+            bill.cost_per_day
+        ))
 
 
 def main():
-    bill = Bill()
-    bill.water_bill()
-    print("Water bill total: ${}".format(bill.water_total))
-    print("Water bill per day: ${}".format(bill.water_per_day))
+    water_bill = Bill(start_date=datetime(year=2019, month=6, day=24),
+                      end_date=datetime(year=2019, month=7, day=23),
+                      category="water",
+                      total=107.30)
+
+    summarize_bills([water_bill])
 
     start_fourway_split = datetime(year=2019, month=6, day=24)
     end_fourway_split = datetime(year=2019, month=7, day=6)
-    fourway_split_duration = end_fourway_split - start_fourway_split
-    water_fourway_split = (bill.water_per_day * fourway_split_duration.days) / 4
+    water_fourway_split = split_bill(water_bill, start_fourway_split, end_fourway_split, 4)
     print("Water bill owed per person, split four ways: ${}".format(water_fourway_split))
 
     start_threeway_split = datetime(year=2019, month=7, day=6)
-    end_threeway_split = bill.water_end
-    threeway_split_duration = end_threeway_split - start_threeway_split
-    water_threeway_split = (bill.water_per_day * threeway_split_duration.days) / 3
+    end_threeway_split = water_bill.end_date
+    water_threeway_split = split_bill(water_bill, start_threeway_split, water_bill.end_date, 3)
     print("Water bill owed per person, split three ways: ${}".format(water_threeway_split))
 
     print(water_threeway_split + water_fourway_split)
