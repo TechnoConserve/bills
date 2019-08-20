@@ -1,6 +1,8 @@
 from datetime import datetime
 
 from models import Bill
+from power import decrypt_power_pdf, process_power_bill_email, process_power_bill_pdf
+from utils import get_config, get_fetch_email
 
 
 def split_bill(bill, start_date, end_date, num_split):
@@ -35,11 +37,21 @@ def main():
     print("Water bill owed per person, split four ways: ${}".format(water_fourway_split))
 
     start_threeway_split = datetime(year=2019, month=7, day=6)
-    end_threeway_split = water_bill.end_date
     water_threeway_split = split_bill(water_bill, start_threeway_split, water_bill.end_date, 3)
     print("Water bill owed per person, split three ways: ${}".format(water_threeway_split))
 
     print(water_threeway_split + water_fourway_split)
+
+    # Get the power bill
+    config = get_config()
+    fetch = get_fetch_email(config)
+    encrypted_bill = process_power_bill_email(fetch)
+    decrypted_bill = decrypt_power_pdf(encrypted_bill)
+    amt_due, service_start, service_end = process_power_bill_pdf(decrypted_bill)
+
+    print("Amount due: ${}".format(amt_due))
+    print("Service start: {}".format(service_start))
+    print("Service end: {}".format(service_end))
 
 
 if __name__ == "__main__":
