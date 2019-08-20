@@ -1,6 +1,8 @@
+import calendar
 from datetime import datetime
 
 from gas import process_gas_bill_email
+from internet import get_internet_bill
 from models import Bill
 from power import decrypt_power_pdf, process_power_bill_email, process_power_bill_pdf
 from utils import get_config, get_fetch_email
@@ -43,14 +45,16 @@ def main():
                     category="gas",
                     total=gas_amt_due)
 
-
     # Manually construct the water bill
     water_bill = Bill(start_date=datetime(year=2019, month=6, day=24),
                       end_date=datetime(year=2019, month=7, day=23),
                       category="water",
                       total=107.30)
 
-    summarize_bills([power_bill, gas_bill, water_bill])
+    # Get the internet bill
+    internet_bill = get_internet_bill(2019, 8)
+
+    summarize_bills([power_bill, gas_bill, water_bill, internet_bill])
 
     start_fourway_split = datetime(year=2019, month=6, day=24)
     end_fourway_split = datetime(year=2019, month=7, day=6)
