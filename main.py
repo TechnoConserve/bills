@@ -34,13 +34,14 @@ def split_bills_between_housemates(bills):
 
         # Create an IndividualBill assigned to each housemate
         for housemate in housemates:
-            housemate_bill = IndividualBill(debtor=housemate,
-                                            service_start=bill.start_date,
-                                            service_end=bill.end_date,
-                                            category=bill.category,
-                                            total=split_cost,
-                                            paid=False)
-            housemate_bill.save()
+            housemate_bill, created = IndividualBill.get_or_create(debtor=housemate,
+                                                                   service_start=bill.start_date,
+                                                                   service_end=bill.end_date,
+                                                                   category=bill.category,
+                                                                   total=split_cost,
+                                                                   paid=False)
+            if created:
+                housemate_bill.save()
 
 
 def main():
