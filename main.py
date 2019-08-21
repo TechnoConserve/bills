@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from db import categories, get_housemates, IndividualBill
 from gas import process_gas_bill_email
 from internet import get_internet_bill
 from models import Bill
@@ -26,8 +27,20 @@ def summarize_bills(bills):
 
 
 def split_bills_between_housemates(bills):
+    housemates = get_housemates()
     for bill in bills:
-        pass
+        # Split the bill into equal parts between housemates
+        split_cost = int((bill.total / len(housemates)) * 100)
+
+        # Create an IndividualBill assigned to each housemate
+        for housemate in housemates:
+            housemate_bill = IndividualBill(debtor=housemate,
+                                            service_start=bill.start_date,
+                                            service_end=bill.end_date,
+                                            category=bill.category,
+                                            total=split_cost,
+                                            paid=False)
+            housemate_bill.save()
 
 
 def main():
@@ -38,7 +51,7 @@ def main():
     decrypted_bill = decrypt_power_pdf(encrypted_bill)
     pwr_amt_due, service_start, service_end = process_power_bill_pdf(decrypted_bill)
 
-    power_bill = Bill(start_date=service_start, end_date=service_end, category="power",
+    power_bill = Bill(start_date=service_start, end_date=service_end, category=categories[2][0],
                       total=pwr_amt_due)
 
     # Get the gas amount
@@ -46,19 +59,22 @@ def main():
 
     gas_bill = Bill(start_date=datetime(year=2019, month=7, day=26),
                     end_date=datetime(year=2019, month=8, day=15),
-                    category="gas",
+                    category=categories[0][0],
                     total=gas_amt_due)
 
     # Manually construct the water bill
     water_bill = Bill(start_date=datetime(year=2019, month=6, day=24),
                       end_date=datetime(year=2019, month=7, day=23),
-                      category="water",
+                      category=categories[3][0],
                       total=107.30)
 
     # Get the internet bill
     internet_bill = get_internet_bill(2019, 8)
 
-    summarize_bills([power_bill, gas_bill, water_bill, internet_bill])
+    bills = [gas_bill, internet_bill, power_bill, water_bill]
+
+    summarize_bills(bills)
+    split_bills_between_housemates(bills)
 
     start_fourway_split = datetime(year=2019, month=6, day=24)
     end_fourway_split = datetime(year=2019, month=7, day=6)
