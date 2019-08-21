@@ -1,11 +1,10 @@
-import calendar
 from datetime import datetime
 
 from gas import process_gas_bill_email
 from internet import get_internet_bill
 from models import Bill
 from power import decrypt_power_pdf, process_power_bill_email, process_power_bill_pdf
-from utils import get_config, get_fetch_email
+from utils import get_config, get_fetch_email, start_flask
 
 
 def split_bill(bill, start_date, end_date, num_split):
@@ -24,6 +23,11 @@ def summarize_bills(bills):
             bill.total,
             bill.cost_per_day
         ))
+
+
+def split_bills_between_housemates(bills):
+    for bill in bills:
+        pass
 
 
 def main():
@@ -64,6 +68,8 @@ def main():
     start_threeway_split = datetime(year=2019, month=7, day=6)
     water_threeway_split = split_bill(water_bill, start_threeway_split, water_bill.end_date, 3)
     print("Water bill owed per person, split three ways: ${:.2f}".format(water_threeway_split))
+
+    start_flask(config["FLASK"]["DEBUG"])
 
 
 if __name__ == "__main__":

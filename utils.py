@@ -1,4 +1,6 @@
 import configparser
+import os
+import subprocess
 
 from models import FetchEmail
 
@@ -28,3 +30,9 @@ def get_fetch_email(config):
     fetch.fetch_unread_messages()
 
     return fetch
+
+
+def start_flask(debug=False):
+    os.environ["FLASK_APP"] = "web.py"
+    os.environ["FLASK_DEBUG"] = debug
+    subprocess.run(["flask", "run"], env=os.environ.copy())
