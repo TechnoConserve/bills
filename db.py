@@ -51,3 +51,18 @@ def get_housemates():
 def get_gas_total():
     return IndividualBill.select(fn.SUM(IndividualBill.total))\
         .where(IndividualBill.category == categories[0][0]).scalar()
+
+
+def get_internet_total():
+    return IndividualBill.select(fn.SUM(IndividualBill.total))\
+        .where(IndividualBill.category == categories[1][0]).scalar()
+
+
+def get_power_total():
+    return IndividualBill.select(fn.SUM(IndividualBill.total))\
+        .where(IndividualBill.category == categories[2][0]).scalar()
+
+
+def get_water_total():
+    return IndividualBill.select(fn.SUM(IndividualBill.total))\
+        .where(IndividualBill.category == categories[3][0]).scalar()

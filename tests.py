@@ -7,7 +7,8 @@ from random import randint
 
 from peewee import SqliteDatabase
 
-from db import categories, Housemate, IndividualBill, get_gas_total
+from db import categories, Housemate, IndividualBill, get_gas_total, get_internet_total, get_power_total, \
+    get_water_total
 
 example_totals = [2253, 342, 99, 10000]
 
@@ -101,9 +102,153 @@ def example_gas_bills(example_housemates):
     bill3.save()
 
 
+@pytest.fixture()
+def example_internet_bills(example_housemates):
+    # Save the housemates so we can use them
+    example_housemates[0].save()
+    example_housemates[1].save()
+    example_housemates[2].save()
+
+    bill1 = IndividualBill(debtor=example_housemates[0],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[1][0],
+                           total=example_totals[0],
+                           paid=False)
+    bill2 = IndividualBill(debtor=example_housemates[1],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[1][0],
+                           total=example_totals[1],
+                           paid=False)
+    bill3 = IndividualBill(debtor=example_housemates[2],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[1][0],
+                           total=example_totals[2],
+                           paid=False)
+    bill1.save()
+    bill2.save()
+    bill3.save()
+
+
+@pytest.fixture()
+def example_power_bills(example_housemates):
+    # Save the housemates so we can use them
+    example_housemates[0].save()
+    example_housemates[1].save()
+    example_housemates[2].save()
+
+    bill1 = IndividualBill(debtor=example_housemates[0],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[2][0],
+                           total=example_totals[0],
+                           paid=False)
+    bill2 = IndividualBill(debtor=example_housemates[1],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[2][0],
+                           total=example_totals[1],
+                           paid=False)
+    bill3 = IndividualBill(debtor=example_housemates[2],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[2][0],
+                           total=example_totals[2],
+                           paid=False)
+    bill1.save()
+    bill2.save()
+    bill3.save()
+
+
+@pytest.fixture()
+def example_water_bills(example_housemates):
+    # Save the housemates so we can use them
+    example_housemates[0].save()
+    example_housemates[1].save()
+    example_housemates[2].save()
+
+    bill1 = IndividualBill(debtor=example_housemates[0],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[3][0],
+                           total=example_totals[0],
+                           paid=False)
+    bill2 = IndividualBill(debtor=example_housemates[1],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[3][0],
+                           total=example_totals[1],
+                           paid=False)
+    bill3 = IndividualBill(debtor=example_housemates[2],
+                           service_start=date(year=2019,
+                                              month=1,
+                                              day=1),
+                           service_end=date(year=2019,
+                                            month=2,
+                                            day=1),
+                           category=categories[3][0],
+                           total=example_totals[2],
+                           paid=False)
+    bill1.save()
+    bill2.save()
+    bill3.save()
+
+
 def test_gas_total(example_gas_bills):
     correct_total = example_totals[0] + example_totals[1] + example_totals[2]
     test_total = get_gas_total()
+    assert correct_total == test_total
+
+
+def test_internet_total(example_internet_bills):
+    correct_total = example_totals[0] + example_totals[1] + example_totals[2]
+    test_total = get_internet_total()
+    assert correct_total == test_total
+
+
+def test_power_total(example_power_bills):
+    correct_total = example_totals[0] + example_totals[1] + example_totals[2]
+    test_total = get_power_total()
+    assert correct_total == test_total
+
+
+def test_water_total(example_water_bills):
+    correct_total = example_totals[0] + example_totals[1] + example_totals[2]
+    test_total = get_water_total()
     assert correct_total == test_total
 
 
