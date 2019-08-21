@@ -8,7 +8,7 @@ from random import randint
 from peewee import SqliteDatabase
 
 from db import categories, Housemate, IndividualBill, get_gas_total, get_internet_total, get_power_total, \
-    get_water_total, get_housemates, get_total_owed
+    get_water_total, get_housemates, get_total_owed, get_individual_bills
 
 MODELS = [Housemate, IndividualBill]
 example_totals = [2253, 342, 99, 10000]
@@ -286,3 +286,7 @@ class TestDB:
         correct_total = example_totals[0] * 4
         test_total = get_total_owed(example_housemates[0])
         assert test_total == correct_total
+
+    def test_get_individual_bills(self, example_housemates, example_water_bills, example_power_bills,
+                                  example_internet_bills, example_gas_bills):
+        assert get_individual_bills(example_housemates[0]).count() == 4

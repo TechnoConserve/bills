@@ -71,3 +71,7 @@ def get_water_total():
 def get_total_owed(housemate):
     return IndividualBill.select(fn.SUM(IndividualBill.total))\
         .where(IndividualBill.paid == False, IndividualBill.debtor == housemate).scalar()
+
+
+def get_individual_bills(housemate):
+    return IndividualBill.select().where(IndividualBill.debtor == housemate)
