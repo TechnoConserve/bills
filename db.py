@@ -75,3 +75,7 @@ def get_total_owed(housemate):
 
 def get_individual_bills(housemate):
     return IndividualBill.select().where(IndividualBill.debtor == housemate)
+
+
+def get_individual_unpaid_bills(housemate):
+    return IndividualBill.select().where(IndividualBill.debtor == housemate, IndividualBill.paid == False)
