@@ -8,7 +8,7 @@ from random import randint
 from peewee import SqliteDatabase
 
 from db import categories, Housemate, IndividualBill, get_gas_total, get_internet_total, get_power_total, \
-    get_water_total, get_housemates
+    get_water_total, get_housemates, get_total_owed
 
 MODELS = [Housemate, IndividualBill]
 example_totals = [2253, 342, 99, 10000]
@@ -247,22 +247,25 @@ class TestDB:
     def test_gas_total(self, example_gas_bills):
         correct_total = example_totals[0] + example_totals[1] + example_totals[2]
         test_total = get_gas_total()
-        assert correct_total == test_total
+        assert test_total == correct_total
 
     def test_internet_total(self, example_internet_bills):
         correct_total = example_totals[0] + example_totals[1] + example_totals[2]
         test_total = get_internet_total()
-        assert correct_total == test_total
+        assert test_total is not None
+        assert test_total == correct_total
 
     def test_power_total(self, example_power_bills):
         correct_total = example_totals[0] + example_totals[1] + example_totals[2]
         test_total = get_power_total()
-        assert correct_total == test_total
+        assert test_total is not None
+        assert test_total == correct_total
 
     def test_water_total(self, example_water_bills):
         correct_total = example_totals[0] + example_totals[1] + example_totals[2]
         test_total = get_water_total()
-        assert correct_total == test_total
+        assert test_total is not None
+        assert test_total == correct_total
 
     def test_housemate_creation(self, random_bills):
         assert IndividualBill.select().count() == 30
@@ -277,3 +280,9 @@ class TestDB:
         example_housemates[2].save()
         housemates = get_housemates()
         assert len(housemates) == 3
+
+    def test_total_owed(self, example_gas_bills, example_internet_bills, example_power_bills,
+                        example_water_bills, example_housemates):
+        correct_total = example_totals[0] * 4
+        test_total = get_total_owed(example_housemates[0])
+        assert test_total == correct_total

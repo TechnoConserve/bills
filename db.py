@@ -66,3 +66,8 @@ def get_power_total():
 def get_water_total():
     return IndividualBill.select(fn.SUM(IndividualBill.total))\
         .where(IndividualBill.category == categories[3][0]).scalar()
+
+
+def get_total_owed(housemate):
+    return IndividualBill.select(fn.SUM(IndividualBill.total))\
+        .where(IndividualBill.paid == False, IndividualBill.debtor == housemate).scalar()
