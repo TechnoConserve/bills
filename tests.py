@@ -10,14 +10,16 @@ from peewee import SqliteDatabase
 from db import categories, Housemate, IndividualBill, get_gas_total, get_internet_total, get_power_total, \
     get_water_total, get_housemates
 
+MODELS = [Housemate, IndividualBill]
 example_totals = [2253, 342, 99, 10000]
 
 
 class DB:
     def __init__(self, tmpdir):
         self.db = SqliteDatabase(os.path.join(tmpdir, 'bills_test.db'))
+        self.db.bind(MODELS)
         self.db.connect()
-        self.db.create_tables([Housemate, IndividualBill])
+        self.db.create_tables(MODELS)
         self.db.close()
 
     def connect(self):
@@ -26,8 +28,8 @@ class DB:
     def close(self):
         self.db.close()
 
-    def drop_tables(self, tables):
-        self.db.drop_tables(tables)
+    def drop_tables(self):
+        self.db.drop_tables(MODELS)
 
 
 @pytest.fixture()
@@ -44,7 +46,7 @@ class TestDB:
             yield
         finally:
             db.close()
-            db.drop_tables([Housemate, IndividualBill])
+            db.drop_tables()
 
     @pytest.fixture()
     def example_housemates(self):
