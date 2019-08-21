@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Billz</title>
+</head>
+<body>
+    <div>
+    <h3>Housemates</h3>
+        <ul>
+            {% for housemate in housemates %}
+                <li>{{ housemate }}</li>
+            {% else %}
+                <li>You're all alone.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h3>Bills</h3>
+        <p>Gas Total: {{ gas_total }}</p>
+        <p>Internet Total: {{ internet_total }}</p>
+        <p>Power Total: {{ power_total }}</p>
+        <p>Water Total: {{ water_total }}</p>
+    </div>
+</body>
+</html>
