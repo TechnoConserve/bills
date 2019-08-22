@@ -7,44 +7,51 @@
 
     <title>Billz</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div>
-        <h3>Bills</h3>
-        <p class="thick">Gas Total: {{ "${:.2f}".format(gas_total) }}</p>
-        <p class="thick">Internet Total: {{ "${:.2f}".format(internet_total) }}</p>
-        <p class="thick">Power Total: {{ "${:.2f}".format(power_total) }}</p>
-        <p class="thick">Water Total: {{ "${:.2f}".format(water_total) }}</p>
-    </div>
+    <div class="container">
+        <div>
+            <h3>Bills</h3>
+            <div class="row">
+                <div class="col-sm">
+                    <p class="thick">Gas Total: {{ "${:.2f}".format(gas_total) }}</p>
+                </div>
+                <div class="col-sm">
+                    <p class="thick">Internet Total: {{ "${:.2f}".format(internet_total) }}</p>
+                </div>
+                <div class="col-sm">
+                    <p class="thick">Power Total: {{ "${:.2f}".format(power_total) }}</p>
+                </div>
+                <div class="col-sm">
+                    <p class="thick">Water Total: {{ "${:.2f}".format(water_total) }}</p>
+                </div>
+            </div>
+        </div>
 
-    <div>
-    <h3>Cost Per Housemate</h3>
-        <ul>
-            {% for housemate in housemates %}
-                <li>{{ housemate }}</li>
-                <ul>
-                    <li class="thick">Total Owed: {{ "${:.2f}".format(total_owed[housemate]) }}</li>
-                    {% for bill in individual_bills[housemate] %}
-                        <li>{{ bill.category | capitalize}} : {{ "${:.2f}".format(bill.total / 100) }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <li>You're all alone.</li>
-            {% endfor %}
-        </ul>
+        <div>
+        <h3>Cost Per Housemate</h3>
+            <ul>
+                {% for housemate in housemates %}
+                    <li>{{ housemate }}</li>
+                    <ul>
+                        <li class="thick">Total Owed: {{ "${:.2f}".format(total_owed[housemate]) }}</li>
+                        {% for bill in individual_bills[housemate] %}
+                            <li>{{ bill.category | capitalize}} : {{ "${:.2f}".format(bill.total / 100) }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <li>You're all alone.</li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+
 </body>
 </html>
