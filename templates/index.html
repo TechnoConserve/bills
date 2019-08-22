@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Billz</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div>
         <h3>Bills</h3>
-        <p>Gas Total: {{ "${:.2f}".format(gas_total) }}</p>
-        <p>Internet Total: {{ "${:.2f}".format(internet_total) }}</p>
-        <p>Power Total: {{ "${:.2f}".format(power_total) }}</p>
-        <p>Water Total: {{ "${:.2f}".format(water_total) }}</p>
+        <p class="thick">Gas Total: {{ "${:.2f}".format(gas_total) }}</p>
+        <p class="thick">Internet Total: {{ "${:.2f}".format(internet_total) }}</p>
+        <p class="thick">Power Total: {{ "${:.2f}".format(power_total) }}</p>
+        <p class="thick">Water Total: {{ "${:.2f}".format(water_total) }}</p>
     </div>
 
     <div>
@@ -19,7 +20,7 @@
             {% for housemate in housemates %}
                 <li>{{ housemate }}</li>
                 <ul>
-                    <li>Total Owed: {{ "${:.2f}".format(total_owed[housemate]) }}</li>
+                    <li class="thick">Total Owed: {{ "${:.2f}".format(total_owed[housemate]) }}</li>
                     {% for bill in individual_bills[housemate] %}
                         <li>{{ bill.category | capitalize}} : {{ "${:.2f}".format(bill.total / 100) }}</li>
                     {% endfor %}
