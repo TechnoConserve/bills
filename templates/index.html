@@ -13,19 +13,63 @@
 <body>
     <div class="container">
         <div>
-            <h3>Bills</h3>
+            <span class="badge badge-pill badge-primary">Bills</span>
             <div class="row">
                 <div class="col-sm">
-                    <p class="thick">Gas Total: {{ "${:.2f}".format(gas_total) }}</p>
+                    <div class="card bg-secondary text-white">
+                        <div class="card-header thick text-center">
+                            Gas
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">From: {{ gas_bill.service_start.strftime('%m/%d/%Y') }}</p>
+                            <p class="card-text">To: {{ gas_bill.service_end.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="card-footer thick">
+                            Total: {{ "${:.2f}".format(gas_total) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm">
-                    <p class="thick">Internet Total: {{ "${:.2f}".format(internet_total) }}</p>
+                    <div class="card bg-primary text-white">
+                        <div class="card-header thick text-center">
+                            Internet
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">From: {{ internet_bill.service_start.strftime('%m/%d/%Y') }}</p>
+                            <p class="card-text">To: {{ internet_bill.service_end.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="card-footer thick">
+                            Total: {{ "${:.2f}".format(internet_total) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm">
-                    <p class="thick">Power Total: {{ "${:.2f}".format(power_total) }}</p>
+                    <div class="card bg-warning text-white">
+                        <div class="card-header thick text-center">
+                            Power
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">From: {{ power_bill.service_start.strftime('%m/%d/%Y') }}</p>
+                            <p class="card-text">To: {{ power_bill.service_end.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="card-footer thick">
+                            Total: {{ "${:.2f}".format(power_total) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm">
-                    <p class="thick">Water Total: {{ "${:.2f}".format(water_total) }}</p>
+                    <div class="card bg-info text-white">
+                        <div class="card-header thick text-center">
+                            Water
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">From: {{ water_bill.service_start.strftime('%m/%d/%Y') }}</p>
+                            <p class="card-text">To: {{ water_bill.service_end.strftime('%m/%d/%Y') }}</p>
+                        </div>
+                        <div class="card-footer thick">
+                            Total: {{ "${:.2f}".format(water_total) }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
