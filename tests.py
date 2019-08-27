@@ -3,6 +3,7 @@ import pytest
 import calendar
 from contextlib import contextmanager
 from datetime import date
+import random
 from random import randint
 
 from peewee import SqliteDatabase
@@ -68,14 +69,14 @@ class TestDB:
             # Subtract from last day of month so I can make sure there're
             # still days left in the month for the service end date
             random_day = randint(1, calendar.monthrange(random_year, random_month)[1] - 5)
-            bill = IndividualBill(debtor=example_housemates[randint(0, len(example_housemates) - 1)],
+            bill = IndividualBill(debtor=random.choice(example_housemates),
                                   service_start=date(year=random_year,
                                                      month=random_month,
                                                      day=random_day),
                                   service_end=date(year=random_year,
                                                    month=random_month,
                                                    day=random_day + 5),
-                                  category=categories[randint(0, len(categories) - 1)][0],
+                                  category=random.choice(categories)[0],
                                   total=randint(1, 10000),
                                   paid=randint(0, 1))
             bill.save()
