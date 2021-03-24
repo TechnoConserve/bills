@@ -38,7 +38,7 @@ pytest==5.1.1
 python-pptx==0.6.5
 requests==2.22.0
 requests-oauthlib==1.2.0
-rsa==4.0
+rsa==4.1
 six==1.10.0
 SpeechRecognition==3.6.3
 textract==1.6.1
